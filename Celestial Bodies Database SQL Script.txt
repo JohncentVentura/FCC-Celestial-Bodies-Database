@@ -1,0 +1,112 @@
+psql --username=freecodecamp --dbname=postgres
+CREATE DATABASE universe;
+
+DROP TABLE earth;
+DROP TABLE moon;
+DROP TABLE planet;
+DROP TABLE star;
+DROP TABLE galaxy;
+\c universe;
+
+CREATE TABLE galaxy();
+ALTER TABLE galaxy ADD COLUMN galaxy_id SERIAL PRIMARY KEY;
+ALTER TABLE galaxy ADD COLUMN name VARCHAR(30) UNIQUE NOT NULL;
+ALTER TABLE galaxy ADD COLUMN constellation TEXT NOT NULL;
+ALTER TABLE galaxy ADD COLUMN apparent_magnitude INT;
+ALTER TABLE galaxy ADD COLUMN distance INT;
+
+CREATE TABLE star();
+ALTER TABLE star ADD COLUMN star_id SERIAL PRIMARY KEY;
+ALTER TABLE star ADD COLUMN galaxy_id INT NOT NULL;
+ALTER TABLE star ADD FOREIGN KEY(galaxy_id) REFERENCES galaxy(galaxy_id);
+ALTER TABLE star ADD COLUMN name VARCHAR(30) UNIQUE NOT NULL;
+ALTER TABLE star ADD COLUMN constellation TEXT;
+ALTER TABLE star ADD COLUMN is_inhabitable BOOLEAN;
+
+CREATE TABLE planet();
+ALTER TABLE planet ADD COLUMN planet_id SERIAL PRIMARY KEY;
+ALTER TABLE planet ADD COLUMN star_id INT NOT NULL;
+ALTER TABLE planet ADD FOREIGN KEY(star_id) REFERENCES star(star_id);
+ALTER TABLE planet ADD COLUMN name VARCHAR(30) UNIQUE NOT NULL;
+ALTER TABLE planet ADD COLUMN description TEXT;
+ALTER TABLE planet ADD COLUMN is_inhabitable BOOLEAN;
+
+CREATE TABLE moon();
+ALTER TABLE moon ADD COLUMN moon_id SERIAL PRIMARY KEY;
+ALTER TABLE moon ADD COLUMN planet_id INT NOT NULL;
+ALTER TABLE moon ADD FOREIGN KEY(planet_id) REFERENCES planet(planet_id);
+ALTER TABLE moon ADD COLUMN name VARCHAR(30) UNIQUE NOT NULL;
+ALTER TABLE moon ADD COLUMN description TEXT;
+ALTER TABLE moon ADD COLUMN is_inhabitable BOOLEAN;
+
+CREATE TABLE earth();
+ALTER TABLE earth ADD COLUMN earth_id SERIAL PRIMARY KEY;
+ALTER TABLE earth ADD COLUMN moon_id INT NOT NULL;
+ALTER TABLE earth ADD FOREIGN KEY(moon_id) REFERENCES moon(moon_id);
+ALTER TABLE earth ADD COLUMN name VARCHAR(50) UNIQUE NOT NULL;
+ALTER TABLE earth ADD COLUMN continent TEXT;
+ALTER TABLE earth ADD COLUMN population NUMERIC;
+
+INSERT INTO galaxy(name, constellation, apparent_magnitude, distance) VALUES
+('Milky Way', 'Sagittarius', 7, 0),
+('Large Magellanic Cloud', 'Dorado', 1, 160),
+('Small Magellanic Cloud', 'Tucana', 3, 200),
+('Andromeda Galaxy', 'Andromeda', 3, 2),
+('Triangulum Galaxy', 'Triangulum', 6, 3),
+('Bodes Galaxy', 'Ursa Major', 7, 12);
+
+INSERT INTO star(galaxy_id, name, constellation, is_inhabitable) VALUES
+(6, 'Achird', 'Cassiopeia', False),
+(4, 'Atlas', 'Taurus', False),
+(2, 'Bellatrix', 'Orion', False),
+(5, 'Irena', 'Hercules', False),
+(3, 'Peacock', 'Pavo', False),
+(1, 'Polaris', 'Ursa Minor', False);
+
+INSERT INTO planet(star_id, name, description, is_inhabitable) VALUES
+(3, 'Mercury', 'Inner Rocky Planet', False),
+(3, 'Venus', 'Inner Rocky Planet', False),
+(3, 'Earth', 'Inner Rocky Planet', True),
+(3, 'Mars', 'Inner Rocky Planet', False),
+(3, 'Jupiter', 'Outer Gas Planet', False),
+(3, 'Saturn', 'Outer Gas Planet', False),
+(3, 'Uranus', 'Outer Gas Planet', False),
+(3, 'Neptune', 'Outer Gas Planet', False),
+(4, 'Pluto', 'Dwarf Planet', False),
+(4, 'Ceres', 'Dwarf Planet', False),
+(4, 'Haumea', 'Dwarf Planet', False),
+(4, 'Eris', 'Dwarf Planet', False);
+
+INSERT INTO moon(planet_id, name, description, is_inhabitable) VALUES
+(3, 'Moon', 'Earth Moon', False),
+(4, 'Phobos', 'Mars Moon', False),
+(4, 'Deimos', 'Mars Moon', False),
+(5, 'Io', 'Jupiter Moon', False),
+(5, 'Europa', 'Jupiter Moon', False),
+(5, 'Ganymede', 'Jupiter Moon', False),
+(5, 'Callisto', 'Jupiter Moon', False),
+(5, 'Amalthea', 'Jupiter Moon', False),
+(5, 'Himalia', 'Jupiter Moon', False),
+(5, 'Elara', 'Jupiter Moon', False),
+(5, 'Pasiphae', 'Jupiter Moon', False),
+(5, 'Sinope', 'Jupiter Moon', False),
+(5, 'Lysithea', 'Jupiter Moon', False),
+(5, 'Carme', 'Jupiter Moon', False),
+(5, 'Ananke', 'Jupiter Moon', False),
+(5, 'Leda', 'Jupiter Moon', False),
+(5, 'Thebe', 'Jupiter Moon', False),
+(5, 'Adrastea', 'Jupiter Moon', False),
+(5, 'Metis', 'Jupiter Moon', False),
+(5, 'Callirrhoe', 'Jupiter Moon', False);
+
+INSERT INTO earth(moon_id, name, continent, population) VALUES
+(41, 'United States of America', 'North America', 333000000),
+(41, 'China', 'Asia', 1412000000),
+(41, 'Russia', 'Eurasia', 144000000);
+
+
+
+
+
+
+
